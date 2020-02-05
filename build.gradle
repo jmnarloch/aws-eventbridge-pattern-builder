@@ -6,19 +6,32 @@ buildscript {
 
 plugins {
     id "com.github.hierynomus.license" version "0.15.0"
+    id 'net.researchgate.release' version '2.6.0'
     id 'java-library'
 }
 
 apply from: 'gradle/license.gradle'
+apply from: 'gradle/release.gradle'
+
+group = "io.jmnarloch"
+archivesBaseName="aws-eventbridge-pattern-builder"
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
 
-dependencies {
+ext {
+    isReleaseVersion = !version.endsWith("SNAPSHOT")
+}
 
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'aws-eventbridge-pattern-builder',
+                'Implementation-Version': archiveVersion
+    }
+}
+
+dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
